@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kodeplin — Masukkan Kode, Temukan Produknya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FAF3E7;
+    --paper:#FFFDF8;
+    --terracotta:#D9744A;
+    --terracotta-dark:#B85A35;
+    --sage:#6B7F5E;
+    --ink:#2C2118;
+    --ink-soft:#8A7A69;
+    --line:#E8DCC8;
+    --radius:18px;
+  }
+  html[data-theme="dark"]{
+    --cream:#1E1712;
+    --paper:#2A2119;
+    --terracotta:#E2895F;
+    --terracotta-dark:#F0A379;
+    --sage:#8FA37D;
+    --ink:#F3E9DA;
+    --ink-soft:#B3A08C;
+    --line:#4A3C2E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:32px 20px 60px;
+    transition:background .2s ease, color .2s ease;
+  }
+  h1,h2,h3,.display{ font-family:'Baloo 2', sans-serif; margin:0; }
+  .wrap{ width:100%; max-width:560px; }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:38px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; margin:0 auto; }
+  header img{ width:38px; height:38px; object-fit:contain; border-radius:8px; }
+  header .word{ font-size:22px; font-weight:700; color:var(--terracotta-dark); }
+
+  #themeToggle{
+    position:fixed;
+    top:20px;
+    right:20px;
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink);
+    cursor:pointer;
+    font-size:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .hero{ text-align:center; margin-bottom:8px; }
+  .kicker{ font-size:15px; color:var(--ink-soft); margin-bottom:6px; }
+  .hero h1{
+    font-size:29px;
+    font-weight:700;
+    line-height:1.3;
+    color:var(--ink);
+    max-width:420px;
+    margin:0 auto 28px;
+  }
+
+  .code-panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 22px;
+  }
+  .code-row{ display:flex; gap:10px; }
+  #codeInput{
+    flex:1;
+    min-width:0;
+    font-family:'Baloo 2', sans-serif;
+    font-size:22px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    text-align:center;
+    padding:14px 10px;
+    border-radius:12px;
+    border:2px dashed var(--line);
+    background:var(--cream);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  #codeInput:focus{ border-color:var(--terracotta); }
+  #codeInput::placeholder{ color:var(--ink-soft); letter-spacing:1px; opacity:.6; }
+  #searchBtn{
+    flex-shrink:0;
+    background:var(--terracotta);
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    padding:0 22px;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    transition:background .15s ease, transform .1s ease;
+  }
+  #searchBtn:hover{ background:var(--terracotta-dark); }
+  #searchBtn:active{ transform:scale(0.97); }
+  .hint{ font-size:13px; color:var(--ink-soft); margin-top:14px; text-align:center; }
+
+  #resultZone{ margin-top:18px; }
+  .product-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    display:flex;
+    gap:16px;
+    padding:16px;
+    align-items:center;
+    animation:reveal .35s ease;
+  }
+  @keyframes reveal{
+    from{ opacity:0; transform:translateY(8px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .product-card img{
+    width:88px; height:88px; object-fit:cover;
+    border-radius:12px; background:var(--cream); flex-shrink:0;
+  }
+  .product-info{ flex:1; min-width:0; }
+  .product-info .name{ font-family:'Baloo 2', sans-serif; font-size:17px; font-weight:600; margin-bottom:2px; }
+  .product-info .price{ color:var(--terracotta-dark); font-weight:700; font-size:15px; margin-bottom:6px; }
+  .product-info .desc{ font-size:13px; color:var(--ink-soft); line-height:1.4; margin-bottom:10px; }
+  .buy-btn{
+    display:inline-block; background:var(--sage); color:#fff; text-decoration:none;
+    font-weight:700; font-size:14px; padding:9px 16px; border-radius:10px;
+  }
+  .not-found{
+    background:var(--paper); border:1px solid var(--line); border-radius:var(--radius);
+    padding:20px; text-align:center; color:var(--ink-soft); font-size:14px; line-height:1.6;
+    animation:reveal .35s ease;
+  }
+  .not-found strong{ color:var(--ink); display:block; margin-bottom:4px; font-family:'Baloo 2',sans-serif; font-size:16px; }
+
+  .how{ margin-top:56px; }
+  .how h2{ text-align:center; font-size:20px; margin-bottom:22px; color:var(--ink); }
+  .steps{ display:flex; flex-direction:column; gap:14px; }
+  .step{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--paper); border:1px solid var(--line);
+    border-radius:14px; padding:14px 16px;
+  }
+  .step .num{ font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--terracotta); font-size:18px; width:22px; flex-shrink:0; }
+  .step .txt strong{ display:block; font-size:14px; margin-bottom:2px; }
+  .step .txt span{ font-size:13px; color:var(--ink-soft); }
+
+  footer{ margin-top:48px; text-align:center; }
+  footer .tag{ font-size:13px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<button id="themeToggle" aria-label="Ganti tema">🌙</button>
+
+<div class="wrap">
+
+  <header>
+    <div class="brand">
+      <img src="https://files.catbox.moe/2yo2ff.jpeg" alt="Kodeplin">
+      <span class="word">Kodeplin</span>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="kicker">Menemukan kode pada video kami?</div>
+    <h1>Masukkan kode tersebut di bawah ini untuk menemukan produknya</h1>
+  </div>
+
+  <div class="code-panel">
+    <div class="code-row">
+      <input id="codeInput" type="text" placeholder="Contoh: SLK2K" maxlength="8">
+      <button id="searchBtn">Cari</button>
+    </div>
+    <div class="hint">Kode dapat ditemukan pada keterangan atau tampilan video promosi kami</div>
+  </div>
+
+  <div id="resultZone"></div>
+
+  <div class="how">
+    <h2>Cara penggunaan</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="num">1</div>
+        <div class="txt"><strong>Tonton video Kodeplin</strong><span>Kode produk akan ditampilkan pada video atau keterangannya</span></div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div class="txt"><strong>Masukkan kode pada kolom di atas</strong><span>Ketik kode tersebut, lalu tekan tombol Cari</span></div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div class="txt"><strong>Selesaikan pembelian di Shopee</strong><span>Anda akan diarahkan langsung ke halaman produk</span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tag">Kodeplin — solusi rumah tangga, satu kode untuk sekali klik</div>
+  </footer>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDBBLtavFrkpnh15OwT9wuebWNrO-3db58",
+  authDomain: "kodeplin.firebaseapp.com",
+  projectId: "kodeplin",
+  storageBucket: "kodeplin.firebasestorage.app",
+  messagingSenderId: "80590831761",
+  appId: "1:80590831761:web:7d683d9ca4bc1edafd7f30"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const themeToggle = document.getElementById('themeToggle');
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+}
+themeToggle.addEventListener('click', ()=>{
+  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+applyTheme('light');
+
+const codeInput = document.getElementById('codeInput');
+const searchBtn = document.getElementById('searchBtn');
+const resultZone = document.getElementById('resultZone');
+
+function renderProduct(p){
+  resultZone.innerHTML = `
+    <div class="product-card">
+      <img src="${p.img}" alt="${p.name}" onerror="this.style.display='none'">
+      <div class="product-info">
+        <div class="name">${p.name}</div>
+        <div class="price">${p.price || ''}</div>
+        <div class="desc">${p.desc || ''}</div>
+        <a class="buy-btn" href="${p.link}" target="_blank" rel="noopener">Beli di Shopee</a>
+      </div>
+    </div>`;
+}
+function renderNotFound(code){
+  resultZone.innerHTML = `
+    <div class="not-found">
+      <strong>Kode "${code}" tidak ditemukan</strong>
+      Silakan periksa kembali ejaan kode, atau tonton video terbaru kami untuk mendapatkan kode yang berlaku.
+    </div>`;
+}
+function renderError(){
+  resultZone.innerHTML = `
+    <div class="not-found">
+      <strong>Terjadi kendala</strong>
+      Tidak dapat memuat data produk saat ini. Silakan coba kembali beberapa saat lagi.
+    </div>`;
+}
+
+async function handleSearch(){
+  const code = codeInput.value.trim().toUpperCase();
+  if(!code){ return; }
+  searchBtn.textContent = '...';
+  try{
+    const snap = await getDoc(doc(db, "products", code));
+    if(snap.exists()){ renderProduct(snap.data()); }
+    else{ renderNotFound(code); }
+  }catch(e){
+    renderError();
+  }
+  searchBtn.textContent = 'Cari';
+}
+searchBtn.addEventListener('click', handleSearch);
+codeInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') handleSearch(); });
+</script>
+
+</body>
+</html>
