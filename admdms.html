@@ -1,208 +1,92 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kodeplin — Panel Pengelola</title>
+<meta name="theme-color" content="#0A0A0A">
+<title>SWAGS — Panel Pengelola</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:#FAF3E7;
-    --paper:#FFFDF8;
-    --terracotta:#D9744A;
-    --terracotta-dark:#B85A35;
-    --sage:#6B7F5E;
-    --danger:#B4543B;
-    --ink:#2C2118;
-    --ink-soft:#8A7A69;
-    --line:#E8DCC8;
-    --radius:16px;
+    --bg:#0A0A0A;
+    --plate:#151515;
+    --plate-edge:#2A2A2A;
+    --input-bg:#0D0D0D;
+    --text:#F2F2F2;
+    --text-dim:#8C8C8C;
+    --accent:#4FD6FF;
+    --danger:#FF6B5E;
+    --ok:#5FE0A0;
+    --font-display:'Anton', sans-serif;
+    --font-body:'Inter', sans-serif;
   }
-  html[data-theme="dark"]{
-    --cream:#1E1712;
-    --paper:#2A2119;
-    --terracotta:#E2895F;
-    --terracotta-dark:#F0A379;
-    --sage:#8FA37D;
-    --danger:#E08A73;
-    --ink:#F3E9DA;
-    --ink-soft:#B3A08C;
-    --line:#4A3C2E;
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
   body{
-    background:var(--cream);
-    color:var(--ink);
-    font-family:'Plus Jakarta Sans', sans-serif;
-    min-height:100vh;
-    padding:32px 20px 60px;
-    transition:background .2s ease, color .2s ease;
+    background:var(--bg); color:var(--text); font-family:var(--font-body);
+    min-height:100vh; padding:40px 18px 60px; -webkit-font-smoothing:antialiased;
   }
-  h1,h2,h3{ font-family:'Baloo 2', sans-serif; margin:0; }
-  .wrap{ width:100%; max-width:520px; margin:0 auto; }
-
-  #themeToggle{
-    position:fixed; top:20px; right:20px;
-    width:38px; height:38px; border-radius:50%;
-    border:1px solid var(--line); background:var(--paper); color:var(--ink);
-    cursor:pointer; font-size:16px;
-    display:flex; align-items:center; justify-content:center;
-  }
+  .wrap{ width:100%; max-width:460px; margin:0 auto; }
 
   /* gate */
-  #gate{
-    min-height:70vh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-  }
-  #gate h1{ font-size:22px; margin-bottom:6px; }
-  #gate p{ color:var(--ink-soft); font-size:14px; margin:0 0 20px; }
+  #gate{ min-height:65vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+  #gate h1{ font-family:var(--font-display); font-size:26px; letter-spacing:.02em; margin:0 0 8px; }
+  #gate p{ color:var(--text-dim); font-size:13.5px; margin:0 0 20px; max-width:280px; }
   #gate input{
-    width:100%;
-    max-width:280px;
-    padding:12px 14px;
-    border-radius:12px;
-    border:1px solid var(--line);
-    background:var(--paper);
-    color:var(--ink);
-    font-size:15px;
-    text-align:center;
-    margin-bottom:12px;
+    width:100%; max-width:240px; padding:12px 14px; border-radius:8px;
+    border:1px solid var(--plate-edge); background:var(--input-bg); color:var(--text);
+    font-size:14.5px; text-align:center; margin-bottom:12px;
   }
   #gate button{
-    background:var(--terracotta);
-    color:#fff;
-    border:none;
-    border-radius:12px;
-    padding:12px 24px;
-    font-weight:700;
-    font-size:14px;
-    cursor:pointer;
+    background:var(--accent); color:#00222B; border:none; border-radius:8px;
+    padding:12px 26px; font-weight:700; font-size:14px; cursor:pointer;
   }
   #gateError{ color:var(--danger); font-size:13px; margin-top:10px; min-height:16px; }
 
-  /* panel */
   #panel{ display:none; }
   #panel.open{ display:block; }
 
-  .panel-header{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:28px;
-  }
-  .panel-header img{ width:34px; height:34px; border-radius:8px; }
-  .panel-header .title{ font-size:19px; font-weight:700; }
-  .panel-header .subtitle{ font-size:12px; color:var(--ink-soft); }
+  .panel-header{ display:flex; align-items:baseline; gap:10px; margin-bottom:26px; }
+  .panel-header .logo{ font-family:var(--font-display); font-size:22px; letter-spacing:.02em; }
+  .panel-header .subtitle{ font-size:12px; color:var(--text-dim); }
 
-  .card{
-    background:var(--paper);
-    border:1px solid var(--line);
-    border-radius:var(--radius);
-    padding:20px;
-    margin-bottom:20px;
-  }
-  .card h2{ font-size:16px; margin-bottom:14px; }
+  .card{ background:var(--plate); border:1px solid var(--plate-edge); border-radius:10px; padding:20px; margin-bottom:18px; }
+  .card h2{ font-family:var(--font-body); font-size:14.5px; font-weight:700; margin:0 0 14px; color:var(--text); }
 
-  .code-generate{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:4px;
-  }
+  .code-generate{ display:flex; align-items:center; gap:10px; margin-bottom:4px; }
   #generatedCode{
-    flex:1;
-    font-family:'Baloo 2', sans-serif;
-    font-size:22px;
-    letter-spacing:3px;
-    text-align:center;
-    padding:12px;
-    border-radius:12px;
-    border:2px dashed var(--line);
-    background:var(--cream);
-    color:var(--terracotta-dark);
-    font-weight:700;
+    flex:1; font-family:var(--font-display); font-size:22px; letter-spacing:.12em; text-align:center;
+    padding:12px; border-radius:8px; border:1px dashed var(--plate-edge); background:var(--input-bg); color:var(--accent);
   }
-  #genBtn{
-    flex-shrink:0;
-    background:var(--ink);
-    color:var(--cream);
-    border:none;
-    border-radius:12px;
-    padding:12px 16px;
-    font-weight:700;
-    font-size:13px;
-    cursor:pointer;
-  }
-  .gen-note{ font-size:12px; color:var(--ink-soft); margin-top:8px; }
+  #genBtn{ flex-shrink:0; background:var(--text); color:#0A0A0A; border:none; border-radius:8px; padding:12px 16px; font-weight:700; font-size:13px; cursor:pointer; }
+  .gen-note{ font-size:11.5px; color:var(--text-dim); margin-top:8px; }
 
-  label{ font-size:12px; color:var(--ink-soft); display:block; margin-top:12px; margin-bottom:4px; }
+  label{ font-size:11.5px; color:var(--text-dim); display:block; margin-top:12px; margin-bottom:4px; }
   input[type="text"], input[type="url"]{
-    width:100%;
-    padding:10px 12px;
-    border-radius:10px;
-    border:1px solid var(--line);
-    font-family:'Plus Jakarta Sans', sans-serif;
-    font-size:13px;
-    background:var(--cream);
-    color:var(--ink);
+    width:100%; padding:10px 12px; border-radius:7px; border:1px solid var(--plate-edge);
+    font-family:var(--font-body); font-size:13px; background:var(--input-bg); color:var(--text);
   }
-  #saveBtn{
-    margin-top:18px;
-    width:100%;
-    background:var(--sage);
-    color:#fff;
-    border:none;
-    border-radius:12px;
-    padding:12px;
-    font-weight:700;
-    font-size:14px;
-    cursor:pointer;
-  }
-  .status{ font-size:13px; margin-top:10px; min-height:16px; }
-  .status.ok{ color:var(--sage); }
+  #saveBtn{ margin-top:18px; width:100%; background:var(--accent); color:#00222B; border:none; border-radius:8px; padding:12px; font-weight:700; font-size:14px; cursor:pointer; }
+  .status{ font-size:12.5px; margin-top:10px; min-height:16px; }
+  .status.ok{ color:var(--ok); }
   .status.err{ color:var(--danger); }
 
-  .list-item{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:10px 0;
-    border-bottom:1px solid var(--line);
-    font-size:13px;
-  }
-  .list-item:last-child{ border-bottom:none; }
-  .list-item .meta{ min-width:0; }
-  .list-item .code{ font-family:'Baloo 2', sans-serif; font-weight:700; color:var(--terracotta-dark); letter-spacing:1px; }
-  .list-item .name{ color:var(--ink-soft); font-size:12px; }
-  .list-item button{
-    flex-shrink:0;
-    background:none;
-    border:1px solid var(--line);
-    color:var(--danger);
-    border-radius:8px;
-    padding:5px 10px;
-    font-size:12px;
-    cursor:pointer;
-  }
-  .empty{ color:var(--ink-soft); font-size:13px; text-align:center; padding:8px 0; }
+  .list-item{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0; border-top:1px solid var(--plate-edge); font-size:13px; }
+  .list-item:first-child{ border-top:none; }
+  .list-item .code{ font-family:var(--font-display); color:var(--accent); letter-spacing:.06em; }
+  .list-item .name{ color:var(--text-dim); font-size:11.5px; }
+  .list-item button{ flex-shrink:0; background:none; border:1px solid var(--plate-edge); color:var(--danger); border-radius:6px; padding:5px 10px; font-size:11.5px; cursor:pointer; }
+  .empty{ color:var(--text-dim); font-size:13px; text-align:center; padding:8px 0; }
 </style>
 </head>
 <body>
 
-<button id="themeToggle" aria-label="Ganti tema">🌙</button>
-
 <div class="wrap">
 
   <div id="gate">
-    <h1>Panel Pengelola Kodeplin</h1>
-    <p>Halaman ini khusus untuk pemilik. Silakan masukkan kata sandi untuk melanjutkan.</p>
+    <h1>SWAGS</h1>
+    <p>Panel ini khusus buat pengelola. Masukin kata sandi buat lanjut.</p>
     <input id="pw" type="password" placeholder="Kata sandi">
     <br>
     <button id="pwBtn">Masuk</button>
@@ -211,11 +95,8 @@
 
   <div id="panel">
     <div class="panel-header">
-      <img src="https://files.catbox.moe/2yo2ff.jpeg" alt="Kodeplin">
-      <div>
-        <div class="title">Panel Pengelola</div>
-        <div class="subtitle">Kelola kode dan produk Kodeplin</div>
-      </div>
+      <span class="logo">SWAGS</span>
+      <span class="subtitle">Panel Pengelola</span>
     </div>
 
     <div class="card">
@@ -224,16 +105,16 @@
         <div id="generatedCode">—</div>
         <button id="genBtn">Buat Kode</button>
       </div>
-      <div class="gen-note">Sistem akan memeriksa seluruh kode yang sudah ada agar kode baru tidak sama atau mirip.</div>
+      <div class="gen-note">Sistem otomatis cek semua kode yang sudah ada, biar gak ada yang sama atau kemiripan tinggi.</div>
 
       <label>Nama produk</label>
-      <input id="f_name" type="text" placeholder="Contoh: Pel Modern Putar 360">
+      <input id="f_name" type="text" placeholder="Contoh: Hoodie SWAGS Onyx">
 
       <label>Harga</label>
-      <input id="f_price" type="text" placeholder="Contoh: Rp89.000">
+      <input id="f_price" type="text" placeholder="Contoh: 189000">
 
       <label>Deskripsi singkat</label>
-      <input id="f_desc" type="text" placeholder="Contoh: Pel otomatis, tidak perlu diperas dengan tangan">
+      <input id="f_desc" type="text" placeholder="Contoh: Fleece 320gsm, unisex, size M–XL">
 
       <label>Tautan gambar produk</label>
       <input id="f_img" type="url" placeholder="https://...">
@@ -257,6 +138,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// Sama seperti index.html — pakai project Firebase yang sama, tapi data
+// disimpan di collection "swags_products" sendiri.
 const firebaseConfig = {
   apiKey: "AIzaSyDBBLtavFrkpnh15OwT9wuebWNrO-3db58",
   authDomain: "kodeplin.firebaseapp.com",
@@ -267,24 +150,11 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const COLLECTION = "swags_products";
 
-/*
-  Kata sandi panel pengelola.
-  Silakan ganti nilai di bawah ini dengan kata sandi pilihan Anda sendiri,
-  lalu simpan ulang berkas ini. Jangan bagikan tautan /admdms kepada siapa pun.
-*/
-const ADMIN_PASSWORD = "020609";
-
-const themeToggle = document.getElementById('themeToggle');
-function applyTheme(theme){
-  document.documentElement.setAttribute('data-theme', theme);
-  themeToggle.textContent = theme === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
-}
-themeToggle.addEventListener('click', ()=>{
-  const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  applyTheme(current === 'dark' ? 'light' : 'dark');
-});
-applyTheme('light');
+// GANTI kata sandi ini sebelum dipakai beneran. Jangan share link
+// halaman ini ke siapa pun selain kamu sendiri.
+const ADMIN_PASSWORD = "GANTI_SANDI_INI";
 
 const gate = document.getElementById('gate');
 const panel = document.getElementById('panel');
@@ -292,82 +162,67 @@ const pwInput = document.getElementById('pw');
 const gateError = document.getElementById('gateError');
 
 document.getElementById('pwBtn').addEventListener('click', checkPassword);
-pwInput.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') checkPassword(); });
+pwInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkPassword(); });
 
 function checkPassword(){
-  if(pwInput.value === ADMIN_PASSWORD){
+  if (pwInput.value === ADMIN_PASSWORD) {
     gate.style.display = 'none';
     panel.classList.add('open');
     refreshList();
-  }else{
-    gateError.textContent = 'Kata sandi salah. Silakan coba kembali.';
+  } else {
+    gateError.textContent = 'Kata sandi salah. Coba lagi.';
   }
 }
 
 async function getAllProducts(){
   const products = {};
-  try{
-    const snap = await getDocs(collection(db, "products"));
+  try {
+    const snap = await getDocs(collection(db, COLLECTION));
     snap.forEach(d => { products[d.id] = d.data(); });
-  }catch(e){ /* belum ada produk atau koneksi bermasalah */ }
+  } catch (e) { /* belum ada produk atau koneksi bermasalah */ }
   return products;
 }
-async function saveProduct(code, data){
-  await setDoc(doc(db, "products", code), data);
-  return true;
-}
-async function removeProduct(code){
-  await deleteDoc(doc(db, "products", code));
-}
+async function saveProduct(code, data){ await setDoc(doc(db, COLLECTION, code), data); }
+async function removeProduct(code){ await deleteDoc(doc(db, COLLECTION, code)); }
 
-// karakter yang dipakai untuk kode, huruf/angka yang mudah dibedakan secara visual
 const CODE_CHARS = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
-
 function randomCode(length){
   let out = '';
-  for(let i=0;i<length;i++){
-    out += CODE_CHARS[Math.floor(Math.random()*CODE_CHARS.length)];
-  }
+  for (let i = 0; i < length; i++) out += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
   return out;
 }
-
 function hammingDistance(a, b){
   let d = 0;
-  for(let i=0;i<a.length;i++){ if(a[i] !== b[i]) d++; }
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) d++;
   return d;
 }
-
-// kode dianggap "mirip" jika hanya berbeda satu karakter dari kode yang sudah ada
 function isTooSimilar(candidate, existingCodes){
-  for(const existing of existingCodes){
-    if(existing.length === candidate.length && hammingDistance(candidate, existing) <= 1){
-      return true;
-    }
+  for (const existing of existingCodes) {
+    if (existing.length === candidate.length && hammingDistance(candidate, existing) <= 1) return true;
   }
   return false;
 }
 
 let currentGeneratedCode = null;
 
-document.getElementById('genBtn').addEventListener('click', async ()=>{
+document.getElementById('genBtn').addEventListener('click', async () => {
   const genBtn = document.getElementById('genBtn');
-  genBtn.textContent = 'Memeriksa...';
+  genBtn.textContent = 'Cek...';
   const products = await getAllProducts();
   const existingCodes = Object.keys(products);
 
-  let candidate;
-  let attempts = 0;
-  do{
+  let candidate, attempts = 0;
+  do {
     candidate = randomCode(5);
     attempts++;
-  }while((existingCodes.includes(candidate) || isTooSimilar(candidate, existingCodes)) && attempts < 200);
+  } while ((existingCodes.includes(candidate) || isTooSimilar(candidate, existingCodes)) && attempts < 200);
 
   currentGeneratedCode = candidate;
   document.getElementById('generatedCode').textContent = candidate;
   genBtn.textContent = 'Buat Kode';
 });
 
-document.getElementById('saveBtn').addEventListener('click', async ()=>{
+document.getElementById('saveBtn').addEventListener('click', async () => {
   const statusEl = document.getElementById('saveStatus');
   const name = document.getElementById('f_name').value.trim();
   const price = document.getElementById('f_price').value.trim();
@@ -375,21 +230,21 @@ document.getElementById('saveBtn').addEventListener('click', async ()=>{
   const img = document.getElementById('f_img').value.trim();
   const link = document.getElementById('f_link').value.trim();
 
-  if(!currentGeneratedCode){
-    statusEl.textContent = 'Silakan buat kode terlebih dahulu.';
+  if (!currentGeneratedCode) {
+    statusEl.textContent = 'Buat kode dulu sebelum simpan.';
     statusEl.className = 'status err';
     return;
   }
-  if(!name || !link){
+  if (!name || !link) {
     statusEl.textContent = 'Nama produk dan tautan Shopee wajib diisi.';
     statusEl.className = 'status err';
     return;
   }
 
-  try{
-    const existing = await getDoc(doc(db, "products", currentGeneratedCode));
-    if(existing.exists()){
-      statusEl.textContent = 'Kode ini baru saja terpakai, silakan buat kode baru.';
+  try {
+    const existing = await getDoc(doc(db, COLLECTION, currentGeneratedCode));
+    if (existing.exists()) {
+      statusEl.textContent = 'Kode ini baru saja terpakai, buat kode baru dulu.';
       statusEl.className = 'status err';
       return;
     }
@@ -401,11 +256,11 @@ document.getElementById('saveBtn').addEventListener('click', async ()=>{
     statusEl.textContent = `Kode ${currentGeneratedCode} berhasil disimpan.`;
     statusEl.className = 'status ok';
     ['f_name','f_price','f_desc','f_img','f_link'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('generatedCode').textContent = '\u2014';
+    document.getElementById('generatedCode').textContent = '—';
     currentGeneratedCode = null;
     refreshList();
-  }catch(e){
-    statusEl.textContent = 'Gagal menyimpan. Silakan periksa koneksi dan coba kembali.';
+  } catch (e) {
+    statusEl.textContent = 'Gagal menyimpan. Cek koneksi dan coba lagi.';
     statusEl.className = 'status err';
   }
 });
@@ -414,13 +269,13 @@ async function refreshList(){
   const listEl = document.getElementById('productList');
   const products = await getAllProducts();
   const codes = Object.keys(products);
-  if(codes.length === 0){
+  if (codes.length === 0) {
     listEl.innerHTML = '<div class="empty">Belum ada kode yang tersimpan.</div>';
     return;
   }
   listEl.innerHTML = codes.map(code => `
     <div class="list-item">
-      <div class="meta">
+      <div>
         <div class="code">${code}</div>
         <div class="name">${products[code].name}</div>
       </div>
@@ -428,10 +283,9 @@ async function refreshList(){
     </div>
   `).join('');
 
-  document.querySelectorAll('.delBtn').forEach(btn=>{
-    btn.addEventListener('click', async ()=>{
-      const code = btn.getAttribute('data-code');
-      await removeProduct(code);
+  document.querySelectorAll('.delBtn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await removeProduct(btn.getAttribute('data-code'));
       refreshList();
     });
   });
